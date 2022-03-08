@@ -1,5 +1,6 @@
 package `in`.sudhanshu.kutuki.ui.main
 
+import `in`.sudhanshu.kutuki.common.domain.model.Category
 import `in`.sudhanshu.kutuki.common.domain.repository.MainRepository
 import `in`.sudhanshu.kutuki.common.domain.repository.Resource
 import android.util.Log
@@ -7,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,8 +19,8 @@ class MainViewModel  @Inject constructor(
     private val repository: MainRepository
 ): ViewModel() {
 
-    private val _btStatus = MutableSharedFlow<Int>(0)
-    val btStatus: SharedFlow<Int> = _btStatus
+    private val _categoryResponse = MutableStateFlow<GetCategoryListEvent>(GetCategoryListEvent.Empty)
+    val categoryResponse: StateFlow<GetCategoryListEvent> = _categoryResponse
 
     init {
       getCategories()
@@ -30,7 +31,14 @@ class MainViewModel  @Inject constructor(
 
             when (val response = repository.getCategories()) {
                 is Resource.Success -> {
-                    _btStatus.emit(response.data!!.code)
+                    Log.e("SUCCESS", "YES")
+                    _categoryResponse.value = GetCategoryListEvent.Success(
+                        response.data!!.response
+                    )
+                }
+
+                is Resource.Error -> {
+                    Log.e("ERROR", response.message!!)
                 }
 
                 else -> Unit

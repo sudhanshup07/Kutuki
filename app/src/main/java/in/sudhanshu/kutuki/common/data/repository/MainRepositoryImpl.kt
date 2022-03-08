@@ -1,7 +1,7 @@
 package `in`.sudhanshu.kutuki.common.data.repository
 
 import `in`.sudhanshu.kutuki.common.data.remote.KutukiApi
-import `in`.sudhanshu.kutuki.common.domain.model.CategoryList
+import `in`.sudhanshu.kutuki.common.domain.model.CategoryResponse
 import `in`.sudhanshu.kutuki.common.domain.repository.MainRepository
 import `in`.sudhanshu.kutuki.common.domain.repository.Resource
 
@@ -10,7 +10,7 @@ class MainRepositoryImpl(
 ): MainRepository {
 
 
-    override suspend fun getCategories(): Resource<CategoryList> {
+    override suspend fun getCategories(): Resource<CategoryResponse> {
         return try{
             val response = api.getCategories()
             val result = response.body()?.toCategoryList()
