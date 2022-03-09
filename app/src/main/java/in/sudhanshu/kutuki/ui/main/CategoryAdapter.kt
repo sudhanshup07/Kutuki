@@ -54,13 +54,13 @@ class CategoryAdapter(private val onClickListener: OnClickListener):
             .into(imageView)
 
         holder.itemView.setOnClickListener {
-            onClickListener.onClick(item, it)
+            onClickListener.onClick(item, it, position)
         }
 
         holder.bind(item)
     }
 
-    class OnClickListener(val clickListener: (item: Category, view: View) -> Unit) {
-        fun onClick(item: Category, view: View) = clickListener(item, view)
+    class OnClickListener(val clickListener: (item: Category, view: View, position: Int) -> Unit) {
+        fun onClick(item: Category, view: View, position: Int) = clickListener(item, view, position)
     }
 }
