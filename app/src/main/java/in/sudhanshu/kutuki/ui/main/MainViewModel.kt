@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,6 +24,8 @@ class MainViewModel  @Inject constructor(
     private val _categoryResponse = MutableStateFlow<GetCategoryListEvent>(GetCategoryListEvent.Empty)
     val categoryResponse: StateFlow<GetCategoryListEvent> = _categoryResponse
 
+    private val _loading =  MutableSharedFlow<Boolean>(0)
+    val loading: SharedFlow<Boolean> = _loading
 
     init {
         getCategories()
@@ -30,16 +34,19 @@ class MainViewModel  @Inject constructor(
     private fun getCategories(){
         viewModelScope.launch(Dispatchers.IO) {
 
+            _loading.emit(true)
+
             when (val response = repository.getCategories()) {
+
                 is Resource.Success -> {
-                    Log.e("SUCCESS", "YES")
                     _categoryResponse.value = GetCategoryListEvent.Success(
                         response.data!!.response
                     )
+                    _loading.emit(false)
                 }
 
                 is Resource.Error -> {
-                    Log.e("ERROR", response.message!!)
+                    _loading.emit(false)
                 }
 
                 else -> Unit

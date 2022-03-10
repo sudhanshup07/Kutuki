@@ -5,6 +5,7 @@ import `in`.sudhanshu.kutuki.common.MarginItemDecoration
 import `in`.sudhanshu.kutuki.common.domain.model.Video
 import `in`.sudhanshu.kutuki.databinding.ActivityVideoBinding
 import `in`.sudhanshu.kutuki.ui.main.MainActivity
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,7 @@ class VideoActivity : AppCompatActivity(), Player.Listener{
 
     private lateinit var exoPlayer: ExoPlayer
     private var categoryName = ""
+    private lateinit var list: List<Video>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,8 +69,17 @@ class VideoActivity : AppCompatActivity(), Player.Listener{
 
                 if(exoPlayer.isPlaying){
                     exoPlayer.seekToDefaultPosition(position)
+                    setVideoBackGround(position)
                 }
             })
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun setVideoBackGround(position: Int){
+        for(index in list.indices){
+            list[index].isPlaying = index == position
+        }
+        binding.recyclerVideo.adapter!!.notifyDataSetChanged()
     }
 
    private fun setUpExoplayer() {
@@ -109,7 +120,7 @@ class VideoActivity : AppCompatActivity(), Player.Listener{
 
                         is GetVideoListEvent.Success -> {
 
-                            val list = it.data.videos.map { item ->
+                            list = it.data.videos.map { item ->
                                 item.value
                             }.filter { video ->
                                 video.categories.split(",").contains(categoryName)

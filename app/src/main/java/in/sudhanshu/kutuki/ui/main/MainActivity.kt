@@ -6,11 +6,16 @@ import `in`.sudhanshu.kutuki.ui.video_playback.VideoActivity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -45,17 +50,33 @@ class MainActivity : AppCompatActivity() {
             })
 
         lifecycleScope.launch{
-            viewModel.categoryResponse.collect {
-               when(it){
-                   is GetCategoryListEvent.Success -> {
-                        val list = it.data.videoCategories.map { item ->
-                            item.value
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.categoryResponse.collect {
+                    when (it) {
+                        is GetCategoryListEvent.Success -> {
+                            val list = it.data.videoCategories.map { item ->
+                                item.value
+                            }
+
+                            (binding.recyclerCategories.adapter as CategoryAdapter).submitList(list)
                         }
 
-                       (binding.recyclerCategories.adapter as CategoryAdapter).submitList(list)
-                   }
-                   else -> Unit
-               }
+
+                        else -> Unit
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.loading.collect {
+                    if (it) {
+                        binding.progressBar.visibility = View.VISIBLE
+                    } else {
+                        binding.progressBar.visibility = View.GONE
+                    }
+                }
             }
         }
     }

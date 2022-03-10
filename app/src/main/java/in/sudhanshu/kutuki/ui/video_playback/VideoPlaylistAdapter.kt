@@ -6,6 +6,7 @@ import `in`.sudhanshu.kutuki.databinding.RowVideoBinding
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,11 @@ class VideoPlaylistAdapter(private val onClickListener: OnClickListener):
 
         fun bind(item: Video, onClickListener: OnClickListener, position: Int) {
 
+            if(item.isPlaying){
+                binding.container.background = ContextCompat.getDrawable(itemView.context,R.drawable.background_playing_video)
+            }else{
+                binding.container.background = null
+            }
             Picasso.get()
                 .load(item.thumbnailURL)
                 .placeholder(R.drawable.ic_broken_image)
@@ -28,7 +34,7 @@ class VideoPlaylistAdapter(private val onClickListener: OnClickListener):
 
            binding.root.setOnClickListener {
                 onClickListener.onClick(item, it, position)
-            }
+           }
             binding.executePendingBindings()
 
         }
