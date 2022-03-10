@@ -4,9 +4,10 @@ import `in`.sudhanshu.kutuki.R
 import `in`.sudhanshu.kutuki.databinding.ActivityVideoBinding
 import `in`.sudhanshu.kutuki.ui.main.MainViewModel
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -50,22 +51,20 @@ class VideoActivity : AppCompatActivity(), Player.Listener{
             //can be used later
         }
 
-        binding.idExoPlayerVIew.findViewById<ImageButton>(R.id.exo_full).setOnClickListener {
+        binding.idExoPlayerVIew.findViewById<ImageView>(R.id.exo_full).setOnClickListener {
             if(isFull) {
-                binding.idExoPlayerVIew.layoutParams.height = 500
+
+                (it as ImageView).setImageResource(R.drawable.ic_fullscreen)
                 binding.idExoPlayerVIew.layoutParams.width = 1000
+                binding.view.visibility = View.VISIBLE
+
             }else{
-                binding.idExoPlayerVIew.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+                (it as ImageView).setImageResource(R.drawable.ic_fullscreen_exit)
                 binding.idExoPlayerVIew.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+                binding.view.visibility = View.GONE
             }
             isFull = !isFull
         }
-    }
-
-    override fun onIsPlayingChanged(isPlaying: Boolean) {
-        super.onIsPlayingChanged(isPlaying)
-
-        //use later
     }
 
     private fun hideSystemBars() {

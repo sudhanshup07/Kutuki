@@ -57,9 +57,11 @@
             android:textSize="14sp"
             android:textStyle="bold" />
 
-        <ImageButton
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:id="@+id/exo_full"
-            style="@style/ExoStyledControls.Button.Bottom.FullScreen"
+            android:src="@drawable/ic_fullscreen_exit"
             app:tint="@color/white" />
 
     </LinearLayout>
