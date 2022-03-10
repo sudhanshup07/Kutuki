@@ -45,6 +45,13 @@ class VideoActivity : AppCompatActivity(), Player.Listener{
         setUpExoplayer()
         setUpRecyclerView()
         observeVideoResponse()
+        setUpClickListener()
+    }
+
+    private fun setUpClickListener() {
+        binding.backButton.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun setUpRecyclerView() {
@@ -70,7 +77,11 @@ class VideoActivity : AppCompatActivity(), Player.Listener{
 
         exoPlayer.addListener(this)
         binding.idExoPlayerVIew.setControllerVisibilityListener {
-            //can be used later
+            if(isFull) {
+                binding.backButton.visibility = it
+            }else{
+                binding.backButton.visibility = View.VISIBLE
+            }
         }
 
        binding.idExoPlayerVIew.findViewById<ImageView>(R.id.exo_full).setOnClickListener {
