@@ -30,6 +30,8 @@ class VideoPlaylistAdapter(private val onClickListener: OnClickListener):
             Picasso.get()
                 .load(item.thumbnailURL)
                 .placeholder(R.drawable.ic_broken_image)
+                .resize(800,450)
+                .centerCrop()
                 .into(binding.imageView)
 
            binding.root.setOnClickListener {
