@@ -15,17 +15,17 @@
         android:layout_height="0dp"
         android:layout_centerHorizontal="true"
         app:controller_layout_id="@layout/custom_exoplayer_controller"
-        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerVideo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:resize_mode="fit"
         app:show_buffering="always" />
 
-    <View
-        android:id="@+id/view"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerVideo"
         android:layout_width="wrap_content"
-        android:layout_height="120dp"
+        android:layout_height="wrap_content"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

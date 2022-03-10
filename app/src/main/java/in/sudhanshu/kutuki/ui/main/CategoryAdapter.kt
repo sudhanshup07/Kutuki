@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import de.hdodenhof.circleimageview.CircleImageView
 
 class CategoryAdapter(private val onClickListener: OnClickListener):
     ListAdapter<Category, CategoryAdapter.CategoryItemViewHolder>(DiffCallback) {
@@ -20,8 +19,18 @@ class CategoryAdapter(private val onClickListener: OnClickListener):
 
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Category) {
+        fun bind(item: Category, onClickListener: OnClickListener) {
             binding.categoryItem = item
+
+            Picasso.get()
+                .load(item.image)
+                .placeholder(R.drawable.ic_broken_image)
+                .resize(500,500)
+                .centerCrop()
+                .into(binding.imageView)
+            binding.root.setOnClickListener {
+                onClickListener.onClick(item, it)
+            }
             binding.executePendingBindings()
         }
     }
@@ -45,22 +54,22 @@ class CategoryAdapter(private val onClickListener: OnClickListener):
     override fun onBindViewHolder(holder: CategoryItemViewHolder, position: Int) {
         val item = getItem(position)
 
-        val imageView = holder.itemView.findViewById<CircleImageView>(R.id.imageView)
-        Picasso.get()
-            .load(item.image)
-            .placeholder(R.drawable.ic_broken_image)
-            .resize(500,500)
-            .centerCrop()
-            .into(imageView)
+//        val imageView = holder.itemView.findViewById<CircleImageView>(R.id.imageView)
+//        Picasso.get()
+//            .load(item.image)
+//            .placeholder(R.drawable.ic_broken_image)
+//            .resize(500,500)
+//            .centerCrop()
+//            .into(imageView)
 
-        holder.itemView.setOnClickListener {
-            onClickListener.onClick(item, it, position)
-        }
+//        holder.itemView.setOnClickListener {
+//            onClickListener.onClick(item, it)
+//        }
 
-        holder.bind(item)
+        holder.bind(item, onClickListener)
     }
 
-    class OnClickListener(val clickListener: (item: Category, view: View, position: Int) -> Unit) {
-        fun onClick(item: Category, view: View, position: Int) = clickListener(item, view, position)
+    class OnClickListener(val clickListener: (item: Category, view: View) -> Unit) {
+        fun onClick(item: Category, view: View) = clickListener(item, view)
     }
 }

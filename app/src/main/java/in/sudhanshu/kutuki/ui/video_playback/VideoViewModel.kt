@@ -1,8 +1,7 @@
-package `in`.sudhanshu.kutuki.ui.main
+package `in`.sudhanshu.kutuki.ui.video_playback
 
 import `in`.sudhanshu.kutuki.common.domain.repository.MainRepository
 import `in`.sudhanshu.kutuki.common.domain.repository.Resource
-import `in`.sudhanshu.kutuki.ui.video_playback.GetVideoListEvent
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,25 +14,25 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class MainViewModel  @Inject constructor(
+class VideoViewModel @Inject constructor(
     private val repository: MainRepository
 ): ViewModel() {
 
-    private val _categoryResponse = MutableStateFlow<GetCategoryListEvent>(GetCategoryListEvent.Empty)
-    val categoryResponse: StateFlow<GetCategoryListEvent> = _categoryResponse
-
+    private val _videoResponse = MutableStateFlow<GetVideoListEvent>(GetVideoListEvent.Empty)
+    val videoResponse: StateFlow<GetVideoListEvent> = _videoResponse
 
     init {
-        getCategories()
+        getVideos()
     }
 
-    private fun getCategories(){
+    private fun getVideos(){
         viewModelScope.launch(Dispatchers.IO) {
 
-            when (val response = repository.getCategories()) {
+            when (val response = repository.getVideos()) {
                 is Resource.Success -> {
+
                     Log.e("SUCCESS", "YES")
-                    _categoryResponse.value = GetCategoryListEvent.Success(
+                    _videoResponse.value = GetVideoListEvent.Success(
                         response.data!!.response
                     )
                 }
@@ -46,6 +45,4 @@ class MainViewModel  @Inject constructor(
             }
         }
     }
-
-
 }

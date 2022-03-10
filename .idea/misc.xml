@@ -12,6 +12,7 @@
         <entry key="app/src/main/res/layout/custom_exoplayer_controller.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_item_list_dialog_list_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_category.xml" value="0.11367753623188406" />
+        <entry key="app/src/main/res/layout/row_video.xml" value="0.10233029381965553" />
       </map>
     </option>
   </component>
