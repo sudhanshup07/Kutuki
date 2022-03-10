@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -59,6 +60,14 @@ class MainActivity : AppCompatActivity() {
                             }
 
                             (binding.recyclerCategories.adapter as CategoryAdapter).submitList(list)
+                        }
+
+                        is GetCategoryListEvent.Failure -> {
+                            Toast.makeText(
+                                this@MainActivity,
+                                it.errorText,
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
 
 

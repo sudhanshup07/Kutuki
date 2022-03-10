@@ -9,6 +9,8 @@
     tools:context=".ui.video_playback.VideoActivity">
 
     <ImageView
+        android:elevation="4dp"
+        android:background="#80000000"
         android:id="@+id/backButton"
         android:layout_width="32dp"
         android:layout_height="32dp"

@@ -150,6 +150,9 @@ class VideoActivity : AppCompatActivity(), Player.Listener{
 
         exoPlayer.prepare()
         exoPlayer.play()
+
+        list[0].isPlaying = true
+        binding.recyclerVideo.adapter?.notifyItemChanged(0)
     }
 
     private fun hideSystemBars() {

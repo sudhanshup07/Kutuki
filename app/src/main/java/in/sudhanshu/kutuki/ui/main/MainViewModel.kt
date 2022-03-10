@@ -46,6 +46,9 @@ class MainViewModel  @Inject constructor(
                 }
 
                 is Resource.Error -> {
+                    _categoryResponse.value = GetCategoryListEvent.Failure(
+                        response.message ?: "Something went wrong"
+                    )
                     _loading.emit(false)
                 }
 
